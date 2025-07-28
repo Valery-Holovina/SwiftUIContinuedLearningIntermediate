@@ -96,25 +96,24 @@ struct RandomModel: Identifiable{
 //}
 
 
+//MARK:  use $item
 struct MultipleSheetsLearn: View {
-    @State var selectedModel: RandomModel = RandomModel(title: "starting title")
-    @State var showSheet: Bool = false
-    @State var showSheet2: Bool = false
+    @State var selectedModel: RandomModel? = nil
+    
     
     var body: some View {
         VStack(spacing: 20){
             Button("Button 1") {
-                showSheet.toggle()
+                selectedModel = RandomModel(title: "One")
             }
-            .sheet(isPresented: $showSheet) {
-                NextScreen(selectedModel: RandomModel(title: "One"))
-            }
+           
             Button("Button 2") {
-                showSheet2.toggle()
+                selectedModel = RandomModel(title: "Two")
             }
-            .sheet(isPresented: $showSheet2) {
-                NextScreen(selectedModel: RandomModel(title: "Two"))
-            }
+            
+        }
+        .sheet(item: $selectedModel) { model in
+            NextScreen(selectedModel: model)
         }
        
     }
