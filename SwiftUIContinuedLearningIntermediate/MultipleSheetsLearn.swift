@@ -56,29 +56,72 @@ struct RandomModel: Identifiable{
 //}
 
 
+
+//MARK: use multiple .sheets
+//struct MultipleSheetsLearn: View {
+//    @State var selectedModel: RandomModel = RandomModel(title: "starting title")
+//    @State var showSheet: Bool = false
+//    @State var showSheet2: Bool = false
+//    
+//    var body: some View {
+//        VStack(spacing: 20){
+//            Button("Button 1") {
+//                showSheet.toggle()
+//            }
+//            .sheet(isPresented: $showSheet) {
+//                NextScreen(selectedModel: RandomModel(title: "One"))
+//            }
+//            Button("Button 2") {
+//                showSheet2.toggle()
+//            }
+//            .sheet(isPresented: $showSheet2) {
+//                NextScreen(selectedModel: RandomModel(title: "Two"))
+//            }
+//        }
+//       
+//    }
+//}
+//
+//struct NextScreen: View {
+//    let selectedModel : RandomModel
+//    
+//    var body: some View {
+//        Text(selectedModel.title)
+//            .font(.largeTitle)
+//    }
+//}
+//
+//#Preview {
+//    MultipleSheetsLearn()
+//}
+
+
 struct MultipleSheetsLearn: View {
     @State var selectedModel: RandomModel = RandomModel(title: "starting title")
     @State var showSheet: Bool = false
+    @State var showSheet2: Bool = false
     
     var body: some View {
         VStack(spacing: 20){
             Button("Button 1") {
-                selectedModel = RandomModel(title: "One")
                 showSheet.toggle()
+            }
+            .sheet(isPresented: $showSheet) {
+                NextScreen(selectedModel: RandomModel(title: "One"))
             }
             Button("Button 2") {
-                selectedModel = RandomModel(title: "Two")
-                showSheet.toggle()
+                showSheet2.toggle()
+            }
+            .sheet(isPresented: $showSheet2) {
+                NextScreen(selectedModel: RandomModel(title: "Two"))
             }
         }
-        .sheet(isPresented: $showSheet) {
-            NextScreen(selectedModel: $selectedModel)
-        }
+       
     }
 }
 
 struct NextScreen: View {
-    @Binding var selectedModel : RandomModel
+    let selectedModel : RandomModel
     
     var body: some View {
         Text(selectedModel.title)
