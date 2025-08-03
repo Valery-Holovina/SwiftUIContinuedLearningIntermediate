@@ -9,7 +9,8 @@ import SwiftUI
 
 struct UserModel: Identifiable{
     let id = UUID().uuidString
-    let name : String
+//    let name : String
+    let name : String?    // name? for compact map
     let points : Int
     let isVerified: Bool
 }
@@ -67,22 +68,36 @@ struct UserModel: Identifiable{
         //Version 2 Shorter
 //        mappedArray = dataArray.map({$0.name})
         
+        
+        
+        // MARK: Compact Map
+        
+        //Version 1
+//        mappedArray = dataArray.compactMap({ user in
+//            return user.name
+//        })
+        
+        //Version 2 Shorter
+        mappedArray = dataArray.compactMap({$0.name})
+        
     }
     
     
     
     // command + option + left arrow (to fold)
     func getUsers(){
+        
+        // make nil  for compact map
         let user1 = UserModel(name: "Jude", points: 5, isVerified: true)
         let user2 = UserModel(name: "Aaron", points: 900, isVerified: true)
         let user3 = UserModel(name: "Cardan", points: 50, isVerified: true)
-        let user4 = UserModel(name: "Liora", points: 2, isVerified: false)
+        let user4 = UserModel(name: nil, points: 2, isVerified: false)
         let user5 = UserModel(name: "Celeana", points: 60, isVerified: true)
         let user6 = UserModel(name: "James", points: 11, isVerified: false)
         let user7 = UserModel(name: "Kazi", points: 10, isVerified: false)
         let user8 = UserModel(name: "Jacks", points: 100, isVerified: true)
         let user9 = UserModel(name: "Scarlet", points: 50, isVerified: true)
-        let user10 = UserModel(name: "Adam", points: 0, isVerified: false)
+        let user10 = UserModel(name: nil, points: 0, isVerified: false)
         
         self.dataArray.append(contentsOf: [
             user1,
