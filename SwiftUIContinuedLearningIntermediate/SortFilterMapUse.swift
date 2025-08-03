@@ -33,6 +33,7 @@ struct UserModel: Identifiable{
         //map
         
         
+        // MARK: Sort
 //        // Version 1
 //        //user1 and user2 just random name not from dataArray
 //        filteredArray = dataArray.sorted { user1, user2 in
@@ -40,7 +41,19 @@ struct UserModel: Identifiable{
 //        }
         
         // Version 2 Shorter
-        filteredArray = dataArray.sorted(by: {$0.points > $1.points})
+//        filteredArray = dataArray.sorted(by: {$0.points > $1.points})
+        
+        
+        //MARK: Filter
+        
+        //Version 1
+//        filteredArray = dataArray.filter({ user in
+////            return user.isVerified
+//            return user.name.contains("C")
+//        })
+        
+        // Version 2 Shorter
+        filteredArray = dataArray.filter({$0.isVerified})
     
         
     }
