@@ -20,6 +20,8 @@ struct UserModel: Identifiable{
     
     var dataArray: [UserModel] = []
     var filteredArray: [UserModel] = []
+    var mappedArray : [String] = []
+    
     
     init(){
         getUsers()
@@ -53,8 +55,17 @@ struct UserModel: Identifiable{
 //        })
         
         // Version 2 Shorter
-        filteredArray = dataArray.filter({$0.isVerified})
+//        filteredArray = dataArray.filter({$0.isVerified})
     
+        
+        //MARK: Map
+        // Version 1
+//        mappedArray = dataArray.map({ (user)-> String in
+//            return user.name
+//        })
+        
+        //Version 2 Shorter
+//        mappedArray = dataArray.map({$0.name})
         
     }
     
@@ -96,24 +107,32 @@ struct SortFilterMapUse: View {
     var body: some View {
         ScrollView{
             VStack(spacing: 10){
-                ForEach(vm.filteredArray){ user in
-                    VStack(alignment: .leading){
-                        Text(user.name)
-                            .font(.headline)
-                        HStack{
-                            Text("Points: \(user.points)")
-                            Spacer()
-                            if user.isVerified{
-                                Image(systemName: "flame.fill")
-                            }
-                        }
-                        }
-                    .foregroundStyle(.white)
-                    .padding()
-                    .background(Color(.systemGray))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding(.horizontal)
-                    }
+                
+                //MARK: ForEach for filter and sort
+//                ForEach(vm.filteredArray){ user in
+//                    VStack(alignment: .leading){
+//                        Text(user.name)
+//                            .font(.headline)
+//                        HStack{
+//                            Text("Points: \(user.points)")
+//                            Spacer()
+//                            if user.isVerified{
+//                                Image(systemName: "flame.fill")
+//                            }
+//                        }
+//                        }
+//                    .foregroundStyle(.white)
+//                    .padding()
+//                    .background(Color(.systemGray))
+//                    .clipShape(RoundedRectangle(cornerRadius: 10))
+//                    .padding(.horizontal)
+//                    }
+                
+                // MARK: ForEach for Map
+                ForEach(vm.mappedArray, id: \.self) { name in
+                    Text(name)
+                        .font(.title)
+                }
             }
         }
     }
