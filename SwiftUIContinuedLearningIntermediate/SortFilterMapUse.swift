@@ -34,7 +34,7 @@ struct UserModel: Identifiable{
         //sort
         //filter
         //map
-        
+        //-----------------------------------------------
         
         // MARK: Sort
 //        // Version 1
@@ -46,7 +46,7 @@ struct UserModel: Identifiable{
         // Version 2 Shorter
 //        filteredArray = dataArray.sorted(by: {$0.points > $1.points})
         
-        
+        //-----------------------------------------------
         //MARK: Filter
         
         //Version 1
@@ -58,7 +58,7 @@ struct UserModel: Identifiable{
         // Version 2 Shorter
 //        filteredArray = dataArray.filter({$0.isVerified})
     
-        
+        //-----------------------------------------------
         //MARK: Map
         // Version 1
 //        mappedArray = dataArray.map({ (user)-> String in
@@ -69,7 +69,7 @@ struct UserModel: Identifiable{
 //        mappedArray = dataArray.map({$0.name})
         
         
-        
+        //-----------------------------------------------
         // MARK: Compact Map
         
         //Version 1
@@ -78,7 +78,22 @@ struct UserModel: Identifiable{
 //        })
         
         //Version 2 Shorter
-        mappedArray = dataArray.compactMap({$0.name})
+//        mappedArray = dataArray.compactMap({$0.name})
+        //-----------------------------------------------
+        
+        // MARK: use all
+        
+//        let sorted = dataArray.sorted(by: {$0.points > $1.points})
+//        let filter = dataArray.filter({$0.isVerified})
+//        let map = dataArray.compactMap({$0.name})
+        
+        //          |
+        //          v
+        
+        mappedArray = dataArray
+            .sorted(by: {$0.points > $1.points})
+            .filter({$0.isVerified})
+            .compactMap({$0.name})
         
     }
     
