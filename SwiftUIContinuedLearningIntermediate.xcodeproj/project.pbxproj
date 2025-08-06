@@ -11,6 +11,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		1A498FD02E43484D00176002 /* CoreDataRelationshipsFolder */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CoreDataRelationshipsFolder;
+			sourceTree = "<group>";
+		};
 		1AFD2ED22E2F994F00089BE2 /* SwiftUIContinuedLearningIntermediate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SwiftUIContinuedLearningIntermediate;
@@ -34,6 +39,7 @@
 			children = (
 				1AFD2ED22E2F994F00089BE2 /* SwiftUIContinuedLearningIntermediate */,
 				1AFD2ED12E2F994F00089BE2 /* Products */,
+				1A498FD02E43484D00176002 /* CoreDataRelationshipsFolder */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,6 +67,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				1A498FD02E43484D00176002 /* CoreDataRelationshipsFolder */,
 				1AFD2ED22E2F994F00089BE2 /* SwiftUIContinuedLearningIntermediate */,
 			);
 			name = SwiftUIContinuedLearningIntermediate;

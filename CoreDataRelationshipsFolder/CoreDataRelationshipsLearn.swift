@@ -8,6 +8,13 @@
 import SwiftUI
 import CoreData
 
+// 3 entities
+// BusinessEntity
+// DepartmentEntity
+// EmployEntity
+
+// (relationship To many (can have many employees) , To one (one employee))
+
 class CoreDataManeger{
     static let instance = CoreDataManeger()
     
