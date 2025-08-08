@@ -115,6 +115,8 @@ class CoreDataManeger{
     func getEmployees(forBusiness business: BusinessEntity){
         
         let request = NSFetchRequest<EmployeeEntity>(entityName: "EmployeeEntity")
+        
+        // when is to one then it is okay
         let filter = NSPredicate(format: "business = %@", business)
         request.predicate = filter
         
@@ -211,16 +213,23 @@ class CoreDataManeger{
         save()
     }
     
+    
+    func deleteDepartment(){
+        let department = departments[0]
+        manager.context.delete(department)
+        save()
+    }
+    
     func save(){
         businesses.removeAll()
         departments.removeAll()
-//        employees.removeAll()
+        employees.removeAll()
         
         DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
             self.manager.save()
             self.getBusinesses()
             self.getDepartments()
-//            self.getEmployees()
+            self.getEmployees()
         }
         
       
@@ -240,7 +249,7 @@ struct CoreDataRelationshipsLearn: View {
             ScrollView{
                 VStack(spacing: 20){
                     Button {
-                        vm.getEmployees(forBusiness: vm.businesses[8])
+                        vm.deleteDepartment()
                     } label: {
                         Text("Perform action")
                             .foregroundStyle(.white)
