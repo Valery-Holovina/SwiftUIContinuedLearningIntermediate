@@ -62,6 +62,17 @@ class CoreDataManeger{
     func getBusinesses(){
         
         let request = NSFetchRequest<BusinessEntity>(entityName: "BusinessEntity")
+        //---------------------
+        //sort
+        let sort = NSSortDescriptor(keyPath: \BusinessEntity.name, ascending: true)
+        request.sortDescriptors = [sort]
+        
+        
+        // filter
+        let filter = NSPredicate(format: "name == %@", "Apple")
+        
+        request.predicate = filter
+        //---------------------
         
         
         do{
