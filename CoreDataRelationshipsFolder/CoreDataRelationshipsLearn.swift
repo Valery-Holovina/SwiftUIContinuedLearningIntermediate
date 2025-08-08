@@ -69,9 +69,9 @@ class CoreDataManeger{
         
         
         // filter
-        let filter = NSPredicate(format: "name == %@", "Apple")
-        
-        request.predicate = filter
+//        let filter = NSPredicate(format: "name == %@", "Apple")
+//        
+//        request.predicate = filter
         //---------------------
         
         
@@ -104,6 +104,19 @@ class CoreDataManeger{
     func getEmployees(){
         
         let request = NSFetchRequest<EmployeeEntity>(entityName: "EmployeeEntity")
+        
+        do{
+            employees = try manager.context.fetch(request)
+        }catch let error{
+            print("eeror fetching")
+        }
+    }
+    
+    func getEmployees(forBusiness business: BusinessEntity){
+        
+        let request = NSFetchRequest<EmployeeEntity>(entityName: "EmployeeEntity")
+        let filter = NSPredicate(format: "business = %@", business)
+        request.predicate = filter
         
         do{
             employees = try manager.context.fetch(request)
@@ -201,13 +214,13 @@ class CoreDataManeger{
     func save(){
         businesses.removeAll()
         departments.removeAll()
-        employees.removeAll()
+//        employees.removeAll()
         
         DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
             self.manager.save()
             self.getBusinesses()
             self.getDepartments()
-            self.getEmployees()
+//            self.getEmployees()
         }
         
       
@@ -227,7 +240,7 @@ struct CoreDataRelationshipsLearn: View {
             ScrollView{
                 VStack(spacing: 20){
                     Button {
-                        vm.updateBusiness()
+                        vm.getEmployees(forBusiness: vm.businesses[8])
                     } label: {
                         Text("Perform action")
                             .foregroundStyle(.white)
