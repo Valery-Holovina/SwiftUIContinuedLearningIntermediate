@@ -49,10 +49,12 @@ class CoreDataManeger{
     let manager = CoreDataManeger.instance
     
     var businesses : [BusinessEntity] = []
+    var departments: [DepartmentEntity] = []
     
     
     init() {
         getBusinesses()
+        getDepartments()
     }
     
     func getBusinesses(){
@@ -65,6 +67,19 @@ class CoreDataManeger{
             print("eeror fetching")
         }
     }
+    
+    func getDepartments(){
+        
+        let request = NSFetchRequest<DepartmentEntity>(entityName: "DepartmentEntity")
+        
+        do{
+            departments = try manager.context.fetch(request)
+        }catch let error{
+            print("eeror fetching")
+        }
+    }
+
+    
     
     func addBusiness(){
         
@@ -101,10 +116,12 @@ class CoreDataManeger{
     
     func save(){
         businesses.removeAll()
+        departments.removeAll()
         
         DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
             self.manager.save()
             self.getBusinesses()
+            self.getDepartments()
         }
         
       
@@ -144,6 +161,16 @@ struct CoreDataRelationshipsLearn: View {
                         }
                     }
                     .scrollIndicators(.hidden)
+                    
+                    ScrollView(.horizontal) {
+                        HStack(alignment: .top){
+                            ForEach(vm.departments) { department in
+                                DepartmentView(entity: department)
+                            }
+                        }
+                    }
+                    .scrollIndicators(.hidden)
+
 
                 }
             }
@@ -184,6 +211,42 @@ struct BusinessView: View {
         .padding()
         .frame(maxWidth: 300, alignment: .leading)
         .background(Color(.systemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .shadow(color: Color.secondary, radius: 10)
+        .padding()
+        
+    }
+}
+
+
+struct DepartmentView: View {
+    let entity: DepartmentEntity
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Name: \(entity.name ?? "")")
+                .bold()
+            
+            
+            if let businesses = entity.businesses?.allObjects as? [BusinessEntity]{
+                Text("Businesses: ")
+                    .bold()
+                ForEach(businesses) { business in
+                    Text(business.name ?? "")
+                }
+            }
+            
+            if let employees = entity.employees?.allObjects as? [EmployeeEntity]{
+                Text("Employees: ")
+                    .bold()
+                ForEach(employees) { employee in
+                    Text(employee.name ?? "")
+                }
+            }
+        }
+        .padding()
+        .frame(maxWidth: 300, alignment: .leading)
+        .background(Color(.green))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(color: Color.secondary, radius: 10)
         .padding()
