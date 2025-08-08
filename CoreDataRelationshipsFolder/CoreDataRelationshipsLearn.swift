@@ -297,6 +297,11 @@ struct EmployeeView: View {
             Text("Name: \(entity.name ?? "")")
                 .bold()
             
+            
+            Text("Age: \(entity.age)")
+            Text("Date joined: \(entity.dateJoined ?? Date())")
+            
+            
             Text("Business: ")
                 .bold()
             Text(entity.business?.name ?? "")
