@@ -73,6 +73,23 @@ class CoreDataManeger{
         save()
         
         
+        // add existing departments to the new business
+        //newBusiness.departments = []
+        
+        // add existing employees to the new business
+        //newBusiness.employees = []
+        
+        
+        //add new bussines to existing department
+        //newBusiness.addToDepartments(<#T##value: DepartmentEntity##DepartmentEntity#>)
+        
+        
+        //add new business to existing employee
+//        newBusiness.addToEmployees(<#T##value: EmployeeEntity##EmployeeEntity#>)
+        
+        
+        
+        
     }
     
     func save(){
