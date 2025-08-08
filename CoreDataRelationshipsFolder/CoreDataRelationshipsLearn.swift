@@ -114,6 +114,18 @@ class CoreDataManeger{
         save()
     }
     
+    func addEmployee(){
+        
+        let newEmployee = EmployeeEntity(context: manager.context)
+        newEmployee.age = 17
+        newEmployee.dateJoined = Date()
+        newEmployee.name = "Jude"
+        
+        newEmployee.business = businesses[0]
+        newEmployee.department = departments[0]
+        save()
+    }
+    
     func save(){
         businesses.removeAll()
         departments.removeAll()
@@ -141,7 +153,7 @@ struct CoreDataRelationshipsLearn: View {
             ScrollView{
                 VStack(spacing: 20){
                     Button {
-                        vm.addDepartment()
+                        vm.addEmployee()
                     } label: {
                         Text("Perform action")
                             .foregroundStyle(.white)
