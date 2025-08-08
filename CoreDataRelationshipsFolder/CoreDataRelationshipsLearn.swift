@@ -50,11 +50,13 @@ class CoreDataManeger{
     
     var businesses : [BusinessEntity] = []
     var departments: [DepartmentEntity] = []
+    var employees: [EmployeeEntity] = []
     
     
     init() {
         getBusinesses()
         getDepartments()
+        getEmployees()
     }
     
     func getBusinesses(){
@@ -80,6 +82,16 @@ class CoreDataManeger{
     }
 
     
+    func getEmployees(){
+        
+        let request = NSFetchRequest<EmployeeEntity>(entityName: "EmployeeEntity")
+        
+        do{
+            employees = try manager.context.fetch(request)
+        }catch let error{
+            print("eeror fetching")
+        }
+    }
     
     func addBusiness(){
         
@@ -129,11 +141,13 @@ class CoreDataManeger{
     func save(){
         businesses.removeAll()
         departments.removeAll()
+        employees.removeAll()
         
         DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
             self.manager.save()
             self.getBusinesses()
             self.getDepartments()
+            self.getEmployees()
         }
         
       
@@ -178,6 +192,16 @@ struct CoreDataRelationshipsLearn: View {
                         HStack(alignment: .top){
                             ForEach(vm.departments) { department in
                                 DepartmentView(entity: department)
+                            }
+                        }
+                    }
+                    .scrollIndicators(.hidden)
+                    
+                    
+                    ScrollView(.horizontal) {
+                        HStack(alignment: .top){
+                            ForEach(vm.employees) { employee in
+                                EmployeeView(entity: employee)
                             }
                         }
                     }
@@ -259,6 +283,33 @@ struct DepartmentView: View {
         .padding()
         .frame(maxWidth: 300, alignment: .leading)
         .background(Color(.green))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .shadow(color: Color.secondary, radius: 10)
+        .padding()
+        
+    }
+}
+struct EmployeeView: View {
+    let entity: EmployeeEntity
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Name: \(entity.name ?? "")")
+                .bold()
+            
+            Text("Business: ")
+                .bold()
+            Text(entity.business?.name ?? "")
+            
+            Text("Department: ")
+                .bold()
+            Text(entity.department?.name ?? "")
+            
+          
+        }
+        .padding()
+        .frame(maxWidth: 300, alignment: .leading)
+        .background(Color(.blue))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(color: Color.secondary, radius: 10)
         .padding()
