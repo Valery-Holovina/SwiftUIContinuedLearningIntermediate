@@ -63,11 +63,19 @@ class CoreDataManeger{
         
         let request = NSFetchRequest<BusinessEntity>(entityName: "BusinessEntity")
         
+        
         do{
             businesses = try manager.context.fetch(request)
         }catch let error{
             print("eeror fetching")
         }
+    }
+    
+    func updateBusiness(){
+        
+        let existingBusiness = businesses[8]
+        existingBusiness.addToDepartments(departments[3])
+        save()
     }
     
     func getDepartments(){
@@ -95,9 +103,31 @@ class CoreDataManeger{
     
     func addBusiness(){
         
+//        let newBusiness = BusinessEntity(context: manager.context)
+//        newBusiness.name = "Apple"
+//        save()
+        
+//        let newBusiness = BusinessEntity(context: manager.context)
+//        newBusiness.name = "Microsoft"
+//        
+//        // index depends on how much times you saved same data
+//        newBusiness.departments = [departments[0], departments[3]]
+//        newBusiness.employees = [employees[0], employees[2]]
+//        
+//        save()
+        
+        
         let newBusiness = BusinessEntity(context: manager.context)
-        newBusiness.name = "Apple"
+        newBusiness.name = "Facebook"
+        
+        // index depends on how much times you saved same data
+        //newBusiness.departments = [departments[0], departments[3]]
+        //newBusiness.employees = [employees[0], employees[2]]
+        
         save()
+        
+        
+        //------------------------------
         
         
         // add existing departments to the new business
@@ -120,21 +150,40 @@ class CoreDataManeger{
     }
     
     func addDepartment(){
+//        let newDepartment = DepartmentEntity(context: manager.context)
+//        newDepartment.name = "Marketing"
+//        newDepartment.businesses = [businesses[0]]
+//        save()
+        
+        
+//        // index depends on how much times you saved same data
+//        let newDepartment = DepartmentEntity(context: manager.context)
+//        newDepartment.name = "Engineering"
+////        newDepartment.employees = [employees[2]]
+//        newDepartment.addToEmployees(employees[2])
+//        save()
+        
+        
+        // index depends on how much times you saved same data
         let newDepartment = DepartmentEntity(context: manager.context)
-        newDepartment.name = "Marketing"
-        newDepartment.businesses = [businesses[0]]
+        newDepartment.name = "Finance"
+        newDepartment.businesses = [businesses[0], businesses[6], businesses[8]]
+        newDepartment.addToEmployees(employees[0])
         save()
+
     }
     
     func addEmployee(){
         
         let newEmployee = EmployeeEntity(context: manager.context)
-        newEmployee.age = 17
+        newEmployee.age = 22
         newEmployee.dateJoined = Date()
-        newEmployee.name = "Jude"
+        newEmployee.name = "Cardan"
+//
+        newEmployee.business = businesses[8]
+        newEmployee.department = departments[3]
         
-        newEmployee.business = businesses[0]
-        newEmployee.department = departments[0]
+        
         save()
     }
     
@@ -167,7 +216,7 @@ struct CoreDataRelationshipsLearn: View {
             ScrollView{
                 VStack(spacing: 20){
                     Button {
-                        vm.addEmployee()
+                        vm.updateBusiness()
                     } label: {
                         Text("Perform action")
                             .foregroundStyle(.white)
