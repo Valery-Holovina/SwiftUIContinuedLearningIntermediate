@@ -92,9 +92,22 @@ class CoreDataManeger{
         
     }
     
+    func addDepartment(){
+        let newDepartment = DepartmentEntity(context: manager.context)
+        newDepartment.name = "Marketing"
+        newDepartment.businesses = [businesses[0]]
+        save()
+    }
+    
     func save(){
-        manager.save()
-        getBusinesses()
+        businesses.removeAll()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
+            self.manager.save()
+            self.getBusinesses()
+        }
+        
+      
     }
     
 }
@@ -111,7 +124,7 @@ struct CoreDataRelationshipsLearn: View {
             ScrollView{
                 VStack(spacing: 20){
                     Button {
-                        vm.addBusiness()
+                        vm.addDepartment()
                     } label: {
                         Text("Perform action")
                             .foregroundStyle(.white)
