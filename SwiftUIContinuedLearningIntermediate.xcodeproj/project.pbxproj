@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1AE3D4C52E4A0270005C29A5 /* BackgroundThreadLearn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE3D4C42E4A0270005C29A5 /* BackgroundThreadLearn.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		1AE3D4C42E4A0270005C29A5 /* BackgroundThreadLearn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundThreadLearn.swift; sourceTree = "<group>"; };
 		1AFD2ED02E2F994F00089BE2 /* SwiftUIContinuedLearningIntermediate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIContinuedLearningIntermediate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -37,6 +42,7 @@
 		1AFD2EC72E2F994F00089BE2 = {
 			isa = PBXGroup;
 			children = (
+				1AE3D4C42E4A0270005C29A5 /* BackgroundThreadLearn.swift */,
 				1AFD2ED22E2F994F00089BE2 /* SwiftUIContinuedLearningIntermediate */,
 				1AFD2ED12E2F994F00089BE2 /* Products */,
 				1A498FD02E43484D00176002 /* CoreDataRelationshipsFolder */,
@@ -126,6 +132,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AE3D4C52E4A0270005C29A5 /* BackgroundThreadLearn.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
