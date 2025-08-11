@@ -12,8 +12,22 @@ import SwiftUI
     var dataArray : [String] = []
     
     func fetchData(){
-        let newData = downloadData()
-        dataArray = newData
+        
+        // Happens on the background thread
+        DispatchQueue.global().async{
+            // download the data
+            let newData = self.downloadData()
+            
+            //switch to main thread
+            // Happens on the main thread
+            DispatchQueue.main.async {
+                self.dataArray = newData
+            }
+           
+        }
+        
+        
+        
     }
     
     private func downloadData() -> [String]{
