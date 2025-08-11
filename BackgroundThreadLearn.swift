@@ -14,7 +14,7 @@ import SwiftUI
     func fetchData(){
         
         // Happens on the background thread
-        DispatchQueue.global().async{
+        DispatchQueue.global(qos: .background).async{
             // download the data
             let newData = self.downloadData()
             
@@ -47,7 +47,7 @@ struct BackgroundThreadLearn: View {
     
     var body: some View {
         ScrollView{
-            VStack(spacing: 10){
+            LazyVStack(spacing: 10){
                 Text("Load Data")
                     .font(.largeTitle)
                     .fontWeight(.semibold)
