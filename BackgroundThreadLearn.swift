@@ -18,10 +18,18 @@ import SwiftUI
             // download the data
             let newData = self.downloadData()
             
+            // if you want to understand on which thread you are
+            print("Check 1 \(Thread.isMainThread)")
+            print("Check 1 \(Thread.current)")
+            
+            
             //switch to main thread
             // Happens on the main thread
             DispatchQueue.main.async {
                 self.dataArray = newData
+                
+                print("Check 2 \(Thread.isMainThread)")
+                print("Check 2 \(Thread.current)")
             }
            
         }
