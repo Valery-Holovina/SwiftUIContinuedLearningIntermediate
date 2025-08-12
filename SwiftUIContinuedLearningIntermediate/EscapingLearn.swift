@@ -11,18 +11,35 @@ import SwiftUI
     
     var text: String = "Hello"
     
+//    func getData(){
+//        downloadData2 { returnedData in
+//            text = returnedData
+//        }
+//    }
+    
     func getData(){
-        downloadData2 { returnedData in
-            text = returnedData
+        downloadData3 { [weak self] returnedData in
+            self?.text = returnedData
         }
     }
     
+    // start
     func downloadData() -> String{
         return "New Data!"
     }
     
+    // better
     func downloadData2(completionHandler: (_ data: String) -> ()){
         completionHandler("New Data!")
+      
+    }
+    
+    // right
+    func downloadData3(completionHandler: @escaping (_ data: String) -> ()){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+            completionHandler("New Data!")
+        }
+       
       
     }
     
