@@ -17,9 +17,15 @@ import SwiftUI
 //        }
 //    }
     
+//    func getData(){
+//        downloadData3 { [weak self] returnedData in
+//            self?.text = returnedData
+//        }
+//    }
+    
     func getData(){
-        downloadData3 { [weak self] returnedData in
-            self?.text = returnedData
+        downloadData4 { [weak self] returnedResult in
+            self?.text = returnedResult.data
         }
     }
     
@@ -43,6 +49,20 @@ import SwiftUI
       
     }
     
+    // improved right (+ DownloadResult)
+    func downloadData4(completionHandler: @escaping (DownloadResult) -> ()){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+            let result = DownloadResult(data: "New Data!!!")
+            completionHandler(result)
+        }
+       
+      
+    }
+    
+}
+
+struct DownloadResult{
+    let data: String
 }
 
 struct EscapingLearn: View {
