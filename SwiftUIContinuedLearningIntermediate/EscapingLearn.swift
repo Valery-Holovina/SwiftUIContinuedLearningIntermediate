@@ -24,7 +24,8 @@ import SwiftUI
 //    }
     
     func getData(){
-        downloadData4 { [weak self] returnedResult in
+        //for 4 is the same
+        downloadData5 { [weak self] returnedResult in
             self?.text = returnedResult.data
         }
     }
@@ -59,11 +60,25 @@ import SwiftUI
       
     }
     
+    
+    //  Final one short
+    func downloadData5(completionHandler: @escaping DownloadCompletion){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+            let result = DownloadResult(data: "New Data!!!")
+            completionHandler(result)
+        }
+       
+      
+    }
+    
+    
 }
 
 struct DownloadResult{
     let data: String
 }
+
+typealias DownloadCompletion = (DownloadResult) -> ()
 
 struct EscapingLearn: View {
     
