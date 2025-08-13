@@ -27,10 +27,19 @@ struct CustomerModel: Identifiable{
     func getData(){
         
         guard let data = getJSONData() else {return}
-        print("Json Data: ")
-        print(data)
-        let jsonString = String(data: data, encoding: .utf8)
-        print(jsonString)
+       
+        if
+        let localData = try? JSONSerialization.jsonObject(with: data, options: []),
+        let dictionary = localData as? [String: Any],
+        let id = dictionary["id"] as? String,
+        let name = dictionary["name"] as? String,
+        let points = dictionary["points"] as? Int,
+        let isPremium = dictionary["isPremium"] as? Bool
+        {
+            
+            let newCustomer = CustomerModel(id: id, name: name, points: points, isPremium: isPremium)
+            customer = newCustomer
+        }
         
     }
     
