@@ -18,7 +18,36 @@ struct CustomerModel: Identifiable{
 
 @Observable class CodableViewModel{
     
-    var customer : CustomerModel? = CustomerModel(id: "1", name: "Lera", points: 5, isPremium: true)
+    var customer : CustomerModel? = nil
+    
+    init() {
+        getData()
+    }
+    
+    func getData(){
+        
+        guard let data = getJSONData() else {return}
+        print("Json Data: ")
+        print(data)
+        let jsonString = String(data: data, encoding: .utf8)
+        print(jsonString)
+        
+    }
+    
+    func getJSONData() -> Data?{
+        
+        let dictionary: [String: Any] = [
+            "id": "12345",
+            "name": "Joe",
+            "points": 5,
+            "isPremium": true
+        ]
+        
+        let jsonData =
+        try? JSONSerialization.data(withJSONObject: dictionary, options: [])
+        
+        return jsonData
+    }
 }
 
 
