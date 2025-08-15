@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//https://jsonplaceholder.typicode.com
 // https://app.quicktype.io
 
 struct PostModel: Identifiable, Codable{
@@ -21,9 +22,6 @@ struct PostModel: Identifiable, Codable{
 }
 
 
-
-
-
 @Observable class DownloadWithEscapingViewModel{
     
     var posts : [PostModel] = []
@@ -35,39 +33,39 @@ struct PostModel: Identifiable, Codable{
     // download posts from the Internet
     func getPosts(){
         
-        guard let url = URL(string: "https://jsonplaceholder.typicode.com/posts/1") else {return}
+        guard let url = URL(string: "https://jsonplaceholder.typicode.com/posts") else {return}
         
+        downloadData(fromURl: url) { returnedData in
+            if let data = returnedData{
+                guard let newPosts = try? JSONDecoder().decode([PostModel].self, from: data) else { return }
+                DispatchQueue.main.async{ [weak self] in
+                    self?.posts = newPosts
+                }
+            }else{
+                print("No data returned")
+            }
+        }
+            
+        }
         
+    }
+    func downloadData(fromURl url: URL, completionHandler: @escaping (_ data: Data?) -> ()){
         // happens on background
         URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300
+            let data = data,
+            error == nil,
+            let response = response as? HTTPURLResponse,
+            response.statusCode >= 200 && response.statusCode < 300    // 200-299 successful responses
             else {
                 print("ERROR Downloading Data")
+                completionHandler(nil)
                 return
             }
-            // 200-299 successful responses
-         
-            
-            
-//            print("Successfuly downloaded data!!!")
-//            print(data)
-//            let jsonString = String(data: data, encoding: .utf8)
-//            print(jsonString)
-            
-            
-            guard let newPost = try? JSONDecoder().decode(PostModel.self, from: data) else { return }
-            DispatchQueue.main.async{ [weak self] in
-                self?.posts.append(newPost)
-            }
-            
-            
-        }.resume() // to start it
-    }
+            completionHandler(data)
+        
+    }.resume() // to start it
 }
 
 
