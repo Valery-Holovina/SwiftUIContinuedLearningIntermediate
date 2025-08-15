@@ -7,7 +7,26 @@
 
 import SwiftUI
 
+// https://app.quicktype.io
+
+struct PostModel: Identifiable, Codable{
+    let userId: Int
+    let id: Int
+    let title: String
+    let body: String
+    
+    
+    
+    
+}
+
+
+
+
+
 @Observable class DownloadWithEscapingViewModel{
+    
+    var posts : [PostModel] = []
     
     init() {
         getPosts()
@@ -18,6 +37,8 @@ import SwiftUI
         
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/posts/1") else {return}
         
+        
+        // happens on background
         URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let data = data else {
@@ -47,9 +68,19 @@ import SwiftUI
             let jsonString = String(data: data, encoding: .utf8)
             print(jsonString)
             
+            
+            guard let newPost = try? JSONDecoder().decode(PostModel.self, from: data) else { return }
+            DispatchQueue.main.async{ [weak self] in
+                self?.posts.append(newPost)
+            }
+            
+            
         }.resume() // to start it
     }
 }
+
+
+
 
 struct DownloadWithEscaping: View {
     
