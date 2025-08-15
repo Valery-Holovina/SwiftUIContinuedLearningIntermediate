@@ -41,27 +41,18 @@ struct PostModel: Identifiable, Codable{
         // happens on background
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard let data = data else {
-                print("No Data")
+            guard
+                let data = data,
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode >= 200 && response.statusCode < 300
+            else {
+                print("ERROR Downloading Data")
                 return
             }
-            
-            guard error == nil else {
-                print("ERROR")
-                return
-            }
-            
-       
-            guard let response = response as? HTTPURLResponse else{
-                print("Invalid response")
-                return
-            }
-            
             // 200-299 successful responses
-            guard response.statusCode >= 200 && response.statusCode < 300 else{
-                print("Status is \(response.statusCode) (((")
-                return
-            }
+         
+            
             
 //            print("Successfuly downloaded data!!!")
 //            print(data)
