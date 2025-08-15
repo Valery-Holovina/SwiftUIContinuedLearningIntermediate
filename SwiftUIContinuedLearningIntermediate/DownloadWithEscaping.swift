@@ -63,10 +63,10 @@ struct PostModel: Identifiable, Codable{
                 return
             }
             
-            print("Successfuly downloaded data!!!")
-            print(data)
-            let jsonString = String(data: data, encoding: .utf8)
-            print(jsonString)
+//            print("Successfuly downloaded data!!!")
+//            print(data)
+//            let jsonString = String(data: data, encoding: .utf8)
+//            print(jsonString)
             
             
             guard let newPost = try? JSONDecoder().decode(PostModel.self, from: data) else { return }
@@ -87,7 +87,18 @@ struct DownloadWithEscaping: View {
     @State var vm = DownloadWithEscapingViewModel()
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List{
+            ForEach(vm.posts){post in
+                VStack(alignment: .leading){
+                    Text(post.title)
+                        .font(.headline)
+                    Text(post.body)
+                        .foregroundStyle(.gray)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+            }
+        }
     }
 }
 
