@@ -31,6 +31,9 @@ struct PostModel2: Identifiable, Codable{
         
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/posts") else {return}
         
+        
+        // MARK: Combine discussion
+        
         // 1. sign up for monthly subscription for package to be delivered
         // 2. the company would make the package behind the scene
         // 3. recieve the package at your fron door
@@ -50,17 +53,9 @@ struct PostModel2: Identifiable, Codable{
         // store(cancel subscription if needed)
         
         URLSession.shared.dataTaskPublisher(for: url)
-            .subscribe(on: DispatchQueue.global(qos: .background))      // can go without that on background but already do it because of dataTask...
+            //.subscribe(on: DispatchQueue.global(qos: .background))      // can go without that on background because already do it because of dataTask...
             .receive(on: DispatchQueue.main)
-            .tryMap { (data, response)-> Data in
-                
-                guard
-                    let response = response as? HTTPURLResponse,
-                    response.statusCode >= 200 && response.statusCode < 300 else{
-                    throw URLError(.badServerResponse)
-                }
-                return data
-            }
+            .tryMap(handleOutput)
             .decode(type: [PostModel2].self, decoder: JSONDecoder())
             .sink { completion in
                 print(completion)
@@ -69,6 +64,15 @@ struct PostModel2: Identifiable, Codable{
             }
             .store(in: &cancellables)
 
+    }
+    
+    func handleOutput(output: URLSession.DataTaskPublisher.Output) throws -> Data{
+        guard
+            let response = output.response as? HTTPURLResponse,
+            response.statusCode >= 200 && response.statusCode < 300 else{
+            throw URLError(.badServerResponse)
+        }
+        return output.data
     }
 }
 
