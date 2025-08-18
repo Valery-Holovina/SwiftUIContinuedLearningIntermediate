@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct PostModel2: Identifiable, Codable{
     let userId: Int
@@ -19,6 +20,8 @@ struct PostModel2: Identifiable, Codable{
 @Observable class DownloadWithCombineViewModel{
     
     var posts: [PostModel2] = []
+    var cancellables = Set<AnyCancellable>()
+    
     
     init() {
         getPosts()
@@ -36,9 +39,36 @@ struct PostModel2: Identifiable, Codable{
         // 6. use item!
         // 7. cancellable at any time!
         
+        //-----------------------------------
         
+        // 1. create the publisher
+        // 2. subscribe publisher on background thread
+        // 3. recieve on main thread
+        // 4. tryMap (check that the data is good)
+        // 5. decode (decode data into PostModels2)
+        // 6. sink (put the item in our app)
+        // store(cancel subscription if needed)
         
-        
+        URLSession.shared.dataTaskPublisher(for: url)
+            .subscribe(on: DispatchQueue.global(qos: .background))      // can go without that on background but already do it because of dataTask...
+            .receive(on: DispatchQueue.main)
+            .tryMap { (data, response)-> Data in
+                
+                guard
+                    let response = response as? HTTPURLResponse,
+                    response.statusCode >= 200 && response.statusCode < 300 else{
+                    throw URLError(.badServerResponse)
+                }
+                return data
+            }
+            .decode(type: [PostModel2].self, decoder: JSONDecoder())
+            .sink { completion in
+                print(completion)
+            } receiveValue: {[weak self] returnedPosts in
+                self?.posts = returnedPosts
+            }
+            .store(in: &cancellables)
+
     }
 }
 
