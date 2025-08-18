@@ -16,10 +16,25 @@ struct PostModel2: Identifiable, Codable{
     
 }
 
+@Observable class DownloadWithCombineViewModel{
+    var posts: [PostModel2] = []
+}
 
 struct DownloadWithCombine: View {
+    
+    @State var vm = DownloadWithCombineViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List{
+            ForEach(vm.posts) { post in
+                VStack{
+                    Text(post.title)
+                        .font(.headline)
+                    Text(post.body)
+                        .foregroundStyle(.gray)
+                }
+            }
+        }
     }
 }
 
