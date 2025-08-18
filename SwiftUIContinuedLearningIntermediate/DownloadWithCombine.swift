@@ -57,11 +57,10 @@ struct PostModel2: Identifiable, Codable{
             .receive(on: DispatchQueue.main)
             .tryMap(handleOutput)
             .decode(type: [PostModel2].self, decoder: JSONDecoder())
-            .sink { completion in
-                print(completion)
-            } receiveValue: {[weak self] returnedPosts in
+            .replaceError(with: [])
+            .sink(receiveValue: {[weak self] returnedPosts in
                 self?.posts = returnedPosts
-            }
+            })
             .store(in: &cancellables)
 
     }
