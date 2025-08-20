@@ -10,7 +10,7 @@ import SwiftUI
 struct TimerAndOnRecive: View {
     
     // autoconnect to start as screen loads
-    let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     
     
     //Current Time
@@ -33,6 +33,7 @@ struct TimerAndOnRecive: View {
     
     
     // Countdown to date
+    /*
     @State var timeRemaining: String = ""
     //24 hours after today
     let futureDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
@@ -44,6 +45,10 @@ struct TimerAndOnRecive: View {
         let second = remaining.second ?? 0
         timeRemaining = "\(hour):\(minute):\(second)"
     }
+     */
+    
+    //Animation counter
+    @State var count: Int = 0
     
     var body: some View {
         ZStack{
@@ -52,11 +57,23 @@ struct TimerAndOnRecive: View {
             
 //            Text(dateFormator.string(from: currentDate))  //Timer
             /*Text(finishedText ?? "\(count)")*/      //Countdown
-            Text(timeRemaining) // Countdown to date
-                .font(.system(size: 100, weight: .semibold, design: .rounded))
-                .foregroundStyle(.white)
-                .lineLimit(1)
-                .minimumScaleFactor(0.1)
+//            Text(timeRemaining) // Countdown to date
+//                .font(.system(size: 100, weight: .semibold, design: .rounded))
+//                .foregroundStyle(.white)
+//                .lineLimit(1)
+//                .minimumScaleFactor(0.1)
+            
+            
+            HStack(spacing: 15){
+                Circle()
+                    .offset(y: count == 1 ? -20: 0)
+                Circle()
+                    .offset(y: count == 2 ? -20: 0)
+                Circle()
+                    .offset(y: count == 3 ? -20: 0)
+            }
+            .frame(width: 150)
+            .foregroundStyle(.white)
             
             
         }
@@ -75,8 +92,14 @@ struct TimerAndOnRecive: View {
 //        }
         
         // Countdown to date
+//        .onReceive(timer) { _ in
+//            updateTimeRemaining()
+//        }
         .onReceive(timer) { _ in
-            updateTimeRemaining()
+            withAnimation(.easeInOut(duration: 1.0)){
+                count = count == 3 ? 0 : count+1
+            }
+
         }
     }
 }
