@@ -13,12 +13,18 @@ struct TimerAndOnRecive: View {
     let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
     @State var currentDate: Date = Date()
     
+    var dateFormator: DateFormatter{
+        let formator = DateFormatter()
+        formator.timeStyle = .medium
+        return formator
+    }
+    
     var body: some View {
         ZStack{
             RadialGradient(colors: [Color.purple, Color.blue], center: .center, startRadius: 5, endRadius: 500)
                 .ignoresSafeArea()
             
-            Text(currentDate.description)
+            Text(dateFormator.string(from: currentDate))
                 .font(.system(size: 100, weight: .semibold, design: .rounded))
                 .foregroundStyle(.white)
                 .lineLimit(1)
