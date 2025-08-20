@@ -9,8 +9,9 @@ import SwiftUI
 
 struct TimerAndOnRecive: View {
     
+    // create a publisher
     // autoconnect to start as screen loads
-    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 3.0, on: .main, in: .common).autoconnect()
     
     
     //Current Time
@@ -48,12 +49,20 @@ struct TimerAndOnRecive: View {
      */
     
     //Animation counter
+    /*
     @State var count: Int = 0
+     */
+    
+    
+    @State var count: Int = 1
     
     var body: some View {
         ZStack{
             RadialGradient(colors: [Color.purple, Color.blue], center: .center, startRadius: 5, endRadius: 500)
                 .ignoresSafeArea()
+            
+     // current timer, and all counters
+/*
             
 //            Text(dateFormator.string(from: currentDate))  //Timer
             /*Text(finishedText ?? "\(count)")*/      //Countdown
@@ -64,6 +73,8 @@ struct TimerAndOnRecive: View {
 //                .minimumScaleFactor(0.1)
             
             
+            // animation counter
+            /*
             HStack(spacing: 15){
                 Circle()
                     .offset(y: count == 1 ? -20: 0)
@@ -74,9 +85,42 @@ struct TimerAndOnRecive: View {
             }
             .frame(width: 150)
             .foregroundStyle(.white)
+             */
+            */
+            
+            
+            
+            TabView(selection: $count) {
+                Rectangle()
+                    .foregroundStyle(.red)
+                    .tag(1)
+                
+                Rectangle()
+                    .foregroundStyle(.blue)
+                    .tag(2)
+                
+                Rectangle()
+                    .foregroundStyle(.green)
+                    .tag(3)
+                
+                Rectangle()
+                    .foregroundStyle(.yellow)
+                    .tag(4)
+                
+                Rectangle()
+                    .foregroundStyle(.orange)
+                    .tag(5)
+            }
+            .frame(height: 200)
+            .tabViewStyle(PageTabViewStyle())
             
             
         }
+        // to subscribe on a publisher
+        
+    // current timer, and all counters
+           
+    /*
         //Timer
 //        .onReceive(timer) { value in
 //            currentDate = value
@@ -95,12 +139,25 @@ struct TimerAndOnRecive: View {
 //        .onReceive(timer) { _ in
 //            updateTimeRemaining()
 //        }
+        
+        
+        // animation counter
+//        .onReceive(timer) { _ in
+//            withAnimation(.easeInOut(duration: 1.0)){
+//                count = count == 3 ? 0 : count+1
+//            }
+//
+//        }
+        */
+        
         .onReceive(timer) { _ in
-            withAnimation(.easeInOut(duration: 1.0)){
-                count = count == 3 ? 0 : count+1
-            }
-
-        }
+            withAnimation(.default){
+                     count = count == 5 ? 1 : count+1
+                 }
+     
+             }
+        
+        
     }
 }
 
