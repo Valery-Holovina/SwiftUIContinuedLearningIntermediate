@@ -17,14 +17,29 @@ class SubscriberViewModel: ObservableObject{
     @Published var textFieldText: String = ""
     @Published var textIsValid: Bool = false
     
+    @Published var showButton: Bool = false
+    
     
     
     init() {
         setUpTimer()
         addTextFieldSubscriber()
+        addButtonSubscriber()
     }
     
-    
+    func addButtonSubscriber(){
+        $textIsValid
+            .combineLatest($count)
+            .sink { [weak self] isValid, count in
+                guard let self = self else {return}
+                if isValid && count>=10{
+                    self.showButton = true
+                }else{
+                    self.showButton = false
+                }
+            }
+            .store(in: &cancellables)
+    }
     
     func addTextFieldSubscriber(){
         $textFieldText
@@ -105,6 +120,24 @@ struct CustomPublishersAndSubscribersInCombine: View {
                     
                     ,alignment: .trailing
                 )
+            
+            Button {
+                
+            } label: {
+                Text("Submit".uppercased())
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(height: 55)
+                    .frame(maxWidth: .infinity)
+                    .background(.blue)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.horizontal)
+                    .opacity(vm.showButton ? 1.0: 0.5)
+                
+                    
+            }
+            .disabled(!vm.showButton)
+
                 
         }
     }
