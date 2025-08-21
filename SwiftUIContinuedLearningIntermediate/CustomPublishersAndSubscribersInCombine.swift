@@ -12,7 +12,8 @@ import Combine
 @Observable class SubscriberViewModel{
     
     var count: Int = 0
-    @ObservationIgnored var timer: AnyCancellable?
+//    @ObservationIgnored var timer: AnyCancellable?
+    @ObservationIgnored var cancellables = Set<AnyCancellable>()
     
     
     
@@ -23,7 +24,7 @@ import Combine
     
     
     func setUpTimer(){
-        timer = Timer
+        Timer
             .publish(every: 1, on: .main, in: .common)
             .autoconnect()
         // we can not use onRecieve here so we use sink
@@ -32,9 +33,14 @@ import Combine
                 self.count += 1
                 
                 if self.count >= 10{
-                    self.timer?.cancel()
+//                    self.timer?.cancel()
+                    
+                    for item in self.cancellables{
+                        item.cancel()
+                    }
                 }
             }
+            .store(in: &cancellables)
         
     }
     
