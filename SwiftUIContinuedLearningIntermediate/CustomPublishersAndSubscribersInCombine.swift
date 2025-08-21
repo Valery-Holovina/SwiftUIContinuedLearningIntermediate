@@ -37,7 +37,11 @@ class SubscriberViewModel: ObservableObject{
                 }
             }
         // to set a value
-            .assign(to: \.textIsValid, on: self)
+//            .assign(to: \.textIsValid, on: self)
+        //better version
+            .sink(receiveValue: { [weak self] isValid in
+                self?.textIsValid = isValid
+            })
             .store(in: &cancellables)
     }
     
@@ -75,7 +79,6 @@ struct CustomPublishersAndSubscribersInCombine: View {
         VStack{
             Text("\(vm.count)")
                 .font(.largeTitle)
-            Text(vm.textIsValid.description)
             
             TextField("Type here....", text: $vm.textFieldText)
                 .frame(height: 55)
@@ -83,6 +86,23 @@ struct CustomPublishersAndSubscribersInCombine: View {
                 .background(Color(.systemGray6))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .padding()
+                .overlay (
+                    ZStack{
+                        Image(systemName: "xmark")
+                            .foregroundStyle(.red)
+                            .opacity(
+                                vm.textFieldText.count < 1 ? 0.0:
+                                vm.textIsValid ? 0.0: 1.0)
+                        
+                        Image(systemName: "checkmark")
+                            .foregroundStyle(.green)
+                            .opacity(vm.textIsValid ? 1.0: 0.0)
+                    }
+                        .font(.title)
+                    .padding(.trailing, 20)
+                    
+                    ,alignment: .trailing
+                )
                 
         }
     }
