@@ -8,19 +8,38 @@
 import SwiftUI
 import Combine
 
-
-@Observable class SubscriberViewModel{
+class SubscriberViewModel: ObservableObject{
     
-    var count: Int = 0
+    @Published var count: Int = 0
 //    @ObservationIgnored var timer: AnyCancellable?
-    @ObservationIgnored var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
+    
+    @Published var textFieldText: String = ""
+    @Published var textIsValid: Bool = false
     
     
     
     init() {
         setUpTimer()
+        addTextFieldSubscriber()
     }
     
+    
+    
+    func addTextFieldSubscriber(){
+        $textFieldText
+            .map{ (text) -> Bool in
+                
+                if text.count > 3{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        // to set a value
+            .assign(to: \.textIsValid, on: self)
+            .store(in: &cancellables)
+    }
     
     
     func setUpTimer(){
@@ -32,13 +51,13 @@ import Combine
                 guard let self = self else {return}
                 self.count += 1
                 
-                if self.count >= 10{
-//                    self.timer?.cancel()
-                    
-                    for item in self.cancellables{
-                        item.cancel()
-                    }
-                }
+//                if self.count >= 10{
+////                    self.timer?.cancel()
+//                    
+//                    for item in self.cancellables{
+//                        item.cancel()
+//                    }
+//                }
             }
             .store(in: &cancellables)
         
@@ -50,12 +69,21 @@ import Combine
 
 struct CustomPublishersAndSubscribersInCombine: View {
     
-    @State var vm = SubscriberViewModel()
+    @StateObject var vm = SubscriberViewModel()
     
     var body: some View {
         VStack{
             Text("\(vm.count)")
                 .font(.largeTitle)
+            Text(vm.textIsValid.description)
+            
+            TextField("Type here....", text: $vm.textFieldText)
+                .frame(height: 55)
+                .padding(.horizontal)
+                .background(Color(.systemGray6))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding()
+                
         }
     }
 }
