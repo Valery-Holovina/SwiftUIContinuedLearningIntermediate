@@ -15,25 +15,57 @@ class LocalFileManager{
     
     func saveImage(image: UIImage, name: String){
         
-        guard let data = image.jpegData(compressionQuality: 1.0) else{
+        guard let data = image.jpegData(compressionQuality: 1.0),
+        let path = getPathForImage(name: name)
+        else{
             print("Error getting data")
             return
         }
         
+        do{
+            try data.write(to: path)
+            print("Success saving")
+        }catch let error{
+            print("Error saving")
+        }
+                
+    
+    }
+    
+    
+    
+    func getPathForImage(name:String)->URL?{
         // can not be recreated (Document)
-        let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        // can be doenloaded again (Caches)
-        let directory2 = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)
+//        let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        //---------
+        
+        // can be downloaded again (Caches)
+        guard let path = FileManager
+            .default.urls(for: .cachesDirectory, in: .userDomainMask)
+            .first?
+            .appendingPathComponent("\(name).jpg") else{
+            print("Error getting path")
+            return nil
+        }
+        return path
+        
+        //--------------
         // temporary data (Temporary)
-        let directory3 = FileManager.default.temporaryDirectory
-        
-        print(directory)
-        print(directory2)
-        print(directory3)
-        
-//        data.write(to: <#T##URL#>)
-        
-        
+//        let directory3 = FileManager.default.temporaryDirectory
+
+    }
+    
+    
+    
+    
+    func getImage(name: String)->UIImage?{
+        // .path returns url in String
+        guard let path = getPathForImage(name: name)?.path,
+              FileManager.default.fileExists(atPath: path) else{
+            print("error getting path")
+            return nil
+        }
+        return UIImage(contentsOfFile: path)
     }
 }
 
