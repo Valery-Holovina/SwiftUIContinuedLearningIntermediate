@@ -37,6 +37,24 @@ class LocalFileManager{
         }
     }
     
+    
+    func deleteFolder(){
+        guard let path = FileManager
+            .default.urls(for: .cachesDirectory, in: .userDomainMask)
+            .first?
+            .appendingPathComponent(folderName)
+            .path else{
+            return
+        }
+        
+        do{
+            try FileManager.default.removeItem(atPath: path)
+            print("success deleting folder")
+        }catch let error{
+            print("error deleting folder")
+        }
+    }
+    
     func saveImage(image: UIImage, name: String)->String{
         
         guard let data = image.jpegData(compressionQuality: 1.0),
@@ -144,7 +162,9 @@ class LocalFileManager{
     
     func deleteImage(){
         infoMessage = manager.deleteImage(name: imageName)
+        manager.deleteFolder()
     }
+    
 }
 
 struct FileManagerLearn: View {
