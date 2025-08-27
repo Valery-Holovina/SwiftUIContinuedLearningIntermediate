@@ -13,20 +13,20 @@ class LocalFileManager{
     
     static let instance = LocalFileManager()
     
-    func saveImage(image: UIImage, name: String){
+    
+    func saveImage(image: UIImage, name: String)->String{
         
         guard let data = image.jpegData(compressionQuality: 1.0),
         let path = getPathForImage(name: name)
         else{
-            print("Error getting data")
-            return
+            return "Error getting data"
         }
         
         do{
             try data.write(to: path)
-            print("Success saving")
+            return "Success saving"
         }catch let error{
-            print("Error saving")
+            return "Error saving"
         }
                 
     
@@ -67,27 +67,58 @@ class LocalFileManager{
         }
         return UIImage(contentsOfFile: path)
     }
+    
+    
+    func deleteImage(name:String)-> String{
+        guard let path = getPathForImage(name: name),
+              FileManager.default.fileExists(atPath: path.path) else{
+            return "error getting path"
+        }
+        
+        do{
+            try FileManager.default.removeItem(at: path)
+            return "successfully deleted"
+        }catch let error{
+            return "error deleting"
+        }
+    }
+
 }
+
+
+
+
 
 
 
 @Observable class FileManagerViewModel{
     
     var image: UIImage? = nil
-    let imageName: String = "car"
-    let manager = LocalFileManager.instance
+    @ObservationIgnored let imageName: String = "car"
+    @ObservationIgnored let manager = LocalFileManager.instance
+    var infoMessage: String = ""
     
     init() {
         getImageFromAssets()
+//        getImageFromFileManager()
     }
     
     func getImageFromAssets(){
         image = UIImage(named: imageName)
     }
     
+    func getImageFromFileManager(){
+        image = manager.getImage(name: imageName)
+    }
+    
+    
     func saveImage(){
         guard let image = image else {return}
-        manager.saveImage(image: image, name: imageName)
+        infoMessage =  manager.saveImage(image: image, name: imageName)
+    }
+    
+    func deleteImage(){
+        infoMessage = manager.deleteImage(name: imageName)
     }
 }
 
@@ -108,20 +139,39 @@ struct FileManagerLearn: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .padding(.top,30)
                 }
-                  
-             
-                Button {
-                    vm.saveImage()
-                } label: {
-                    Text("Save to FM")
-                        .foregroundStyle(.white)
-                        .font(.headline)
-                        .padding()
-                        .padding(.horizontal)
-                        .background(.blue)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .padding(.top)
+                
+                HStack{
+                    Button {
+                        vm.saveImage()
+                    } label: {
+                        Text("Save to FM")
+                            .foregroundStyle(.white)
+                            .font(.headline)
+                            .padding()
+                            .padding(.horizontal)
+                            .background(.blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding(.top)
+                    }
+                    
+                    Button {
+                        vm.deleteImage()
+                    } label: {
+                        Text("Delete from FM")
+                            .foregroundStyle(.white)
+                            .font(.headline)
+                            .padding()
+                            .padding(.horizontal)
+                            .background(.red)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding(.top)
+                    }
                 }
+                  
+                Text(vm.infoMessage)
+                    .font(.largeTitle)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.purple)
 
                 
                 Spacer()
