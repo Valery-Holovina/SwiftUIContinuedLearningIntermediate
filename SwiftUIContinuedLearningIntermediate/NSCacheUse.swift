@@ -20,6 +20,13 @@ class CacheManager{
         return cache
     }()
     
+    func add(image: UIImage, name: String){
+        imageCache.setObject(image, forKey: name as NSString)
+        print("Added to cache!")
+    }
+    
+    
+    
 }
 
 
