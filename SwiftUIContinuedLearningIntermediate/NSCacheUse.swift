@@ -7,21 +7,57 @@
 
 import SwiftUI
 
+
+class CacheManager{
+    
+    static let instance = CacheManager() // Singleton
+    private init(){}
+    
+    var imageCache: NSCache<NSString, UIImage> = {
+        let cache = NSCache<NSString, UIImage>()
+        cache.countLimit = 100
+        cache.totalCostLimit = 1024 * 1024 * 100 // 10mb
+        return cache
+    }()
+    
+}
+
+
+
+@Observable class CacheViewModel{
+    
+    var startingImage: UIImage? = nil
+    @ObservationIgnored let imageName: String = "car"
+    let manager = CacheManager.instance
+    
+    init() {
+        getImageFromAssetsFolder()
+    }
+    
+    func getImageFromAssetsFolder(){
+        startingImage = UIImage(named: imageName)
+    }
+}
+
+
 struct NSCacheUse: View {
+    
+    @State var vm = CacheViewModel()
+    
     var body: some View {
         NavigationStack{
             VStack{
                 Spacer()
-                Image("car")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 200, height: 200)
-                    .clipped()
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                   
                 
-
-                
+                if let image = vm.startingImage{
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 200, height: 200)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                       
+                }
                 
                 
                 HStack{
