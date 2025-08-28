@@ -20,14 +20,14 @@ class CacheManager{
         return cache
     }()
     
-    func add(image: UIImage, name: String){
+    func add(image: UIImage, name: String) -> String{
         imageCache.setObject(image, forKey: name as NSString)
-        print("Added to cache!")
+        return "Added to cache!"
     }
     
-    func remove(name:String){
+    func remove(name:String) -> String{
         imageCache.removeObject(forKey: name as NSString)
-        print("removed from cache!")
+        return "removed from cache!"
     }
     
     func get(name:String) -> UIImage?{
@@ -42,6 +42,7 @@ class CacheManager{
     
     var startingImage: UIImage? = nil
     var cachedImage: UIImage? = nil
+    var infoMessage: String = ""
     @ObservationIgnored let imageName: String = "car"
     let manager = CacheManager.instance
     
@@ -55,16 +56,23 @@ class CacheManager{
     
     func saveToCache(){
         guard let image = startingImage else {return}
-        manager.add(image: image, name: imageName)
+        infoMessage = manager.add(image: image, name: imageName)
         
     }
     
     func removeFromCahe(){
-        manager.remove(name: imageName)
+        infoMessage = manager.remove(name: imageName)
     }
     
     func getFromCache(){
-        cachedImage = manager.get(name: imageName)
+        
+        if let returnedImage = manager.get(name: imageName){
+            cachedImage = returnedImage
+            infoMessage = "Got image from Cache"
+        }else{
+            infoMessage = "Image not found in Cache"
+        }
+       
     }
 }
 
@@ -88,6 +96,9 @@ struct NSCacheUse: View {
                        
                 }
                 
+                Text(vm.infoMessage)
+                    .font(.headline)
+                    .foregroundStyle(.pink)
                 
                 HStack{
                     Button {
