@@ -11,7 +11,7 @@ import SwiftUI
 class CacheManager{
     
     static let instance = CacheManager() // Singleton
-    private init(){}
+//    private init(){}
     
     var imageCache: NSCache<NSString, UIImage> = {
         let cache = NSCache<NSString, UIImage>()
@@ -41,6 +41,7 @@ class CacheManager{
 @Observable class CacheViewModel{
     
     var startingImage: UIImage? = nil
+    var cachedImage: UIImage? = nil
     @ObservationIgnored let imageName: String = "car"
     let manager = CacheManager.instance
     
@@ -50,6 +51,20 @@ class CacheManager{
     
     func getImageFromAssetsFolder(){
         startingImage = UIImage(named: imageName)
+    }
+    
+    func saveToCache(){
+        guard let image = startingImage else {return}
+        manager.add(image: image, name: imageName)
+        
+    }
+    
+    func removeFromCahe(){
+        manager.remove(name: imageName)
+    }
+    
+    func getFromCache(){
+        cachedImage = manager.get(name: imageName)
     }
 }
 
@@ -76,7 +91,7 @@ struct NSCacheUse: View {
                 
                 HStack{
                     Button {
-                    
+                        vm.saveToCache()
                     } label: {
                         Text("Save to Cache")
                             .foregroundStyle(.white)
@@ -89,6 +104,7 @@ struct NSCacheUse: View {
                     }
                     
                     Button {
+                        vm.removeFromCahe()
                     } label: {
                         Text("Delete from Cache")
                             .foregroundStyle(.white)
@@ -99,7 +115,32 @@ struct NSCacheUse: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(.top)
                     }
+                    
                 }
+                Button {
+                    vm.getFromCache()
+                } label: {
+                    Text("Get from Cache")
+                        .foregroundStyle(.white)
+                        .font(.headline)
+                        .padding()
+                        .padding(.horizontal)
+                        .background(.yellow)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding(.top)
+                }
+                
+                if let image = vm.cachedImage{
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 200, height: 200)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                       
+                }
+
+
              
                 Spacer()
             }
