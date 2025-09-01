@@ -11,7 +11,7 @@ import SwiftUI
 
 struct DownloadingImages: View {
     
-    @State var vm = DownloadingImagesViewModel()
+    @StateObject var vm = DownloadingImagesViewModel()
     
     var body: some View {
         NavigationStack{

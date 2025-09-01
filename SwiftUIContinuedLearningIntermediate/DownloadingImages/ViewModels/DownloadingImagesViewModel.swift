@@ -6,13 +6,28 @@
 //
 
 import Foundation
+import Combine
 
 
 
-@Observable class DownloadingImagesViewModel{
+class DownloadingImagesViewModel: ObservableObject{
     
-    var dataArray: [PhotoModel] = []
+    @Published var dataArray: [PhotoModel] = []
     
-    @ObservationIgnored let dataService = PhotoModelDataService.instance
+    let dataService = PhotoModelDataService.instance
+    
+    var cancellables = Set<AnyCancellable>()
+    
+    init(){
+        addSubscribers()
+    }
+    
+    func addSubscribers(){
+        dataService.$photoModels
+            .sink{[weak self] returnedPhotModels in
+                self?.dataArray = returnedPhotModels
+            }
+            .store(in: &cancellables)
+    }
     
 }

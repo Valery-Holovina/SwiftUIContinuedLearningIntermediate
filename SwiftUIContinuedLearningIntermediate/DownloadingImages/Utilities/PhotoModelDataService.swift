@@ -12,8 +12,8 @@ class PhotoModelDataService{
     
     static let instance = PhotoModelDataService() // singleton
     
-    var photoModels: [PhotoModel] = []
-    @ObservationIgnored var cancellables = Set<AnyCancellable>()
+    @Published var photoModels: [PhotoModel] = []
+    var cancellables = Set<AnyCancellable>()
     
     
     private init(){
