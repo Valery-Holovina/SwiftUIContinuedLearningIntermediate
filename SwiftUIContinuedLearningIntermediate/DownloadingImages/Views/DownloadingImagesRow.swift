@@ -13,12 +13,12 @@ struct DownloadingImagesRow: View {
     
     var body: some View {
         HStack{
-            Circle()
+            DownloadingImageView(url: model.image)
                 .frame(width: 75, height: 75)
             VStack(alignment: .leading){
                 Text(model.title)
                     .font(.headline)
-                Text(model.url)
+                Text(model.image)
                     .foregroundStyle(.gray)
                     .italic()
             }
@@ -28,6 +28,6 @@ struct DownloadingImagesRow: View {
 }
 
 #Preview {
-    DownloadingImagesRow(model: PhotoModel(albumId: 1, id: 1, title: "title", url: "url here", thumbnailUrl: "thumbnail url here"))
+    DownloadingImagesRow(model: PhotoModel(id: 1, title: "title", price: 12.5, description: "cool", category: "cloth", image: "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_t.png"))
         .padding()
 }
