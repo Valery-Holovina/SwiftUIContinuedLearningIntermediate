@@ -11,9 +11,9 @@ struct DownloadingImageView: View {
     
     @StateObject var loader: ImageLoadingViewModel
     
-    init(url: String) {
+    init(url: String, key: String) {
         // because of StateObject use _
-        _loader = StateObject(wrappedValue: ImageLoadingViewModel(url: url))
+        _loader = StateObject(wrappedValue: ImageLoadingViewModel(url: url, key: key))
     }
     
     var body: some View {
@@ -30,6 +30,6 @@ struct DownloadingImageView: View {
 }
 
 #Preview {
-    DownloadingImageView(url: "https://picsum.photos/seed/picsum/200/300")
+    DownloadingImageView(url: "https://picsum.photos/seed/picsum/200/300", key: "1")
 //        .frame(width: 75, height: 75)
 }
