@@ -20,6 +20,7 @@ struct AccessebilityText: View {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack{
                             Image(systemName: "heart.fill")
+                                .font(.system(size: 30)) // always wil be 30 size
                             Text("Welcome to my app")
                         }
                         .font(.title)
