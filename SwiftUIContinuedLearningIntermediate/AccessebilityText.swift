@@ -10,6 +10,9 @@ import SwiftUI
 // Dynamic text
 
 struct AccessebilityText: View {
+    
+    @Environment(\.dynamicTypeSize) var sizes
+    
     var body: some View {
         NavigationStack{
             List{
@@ -22,13 +25,33 @@ struct AccessebilityText: View {
                         .font(.title)
                         Text("This is some longer text that expandes to multiple lines.")
                             .font(.subheadline)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        /*     .truncationMode(.tail)*/ // where i want to see the dots
+                             .lineLimit(3)
+//                             .minimumScaleFactor(sizes > .large ? 0.8: 1.0)
+                             .minimumScaleFactor(sizes.customMinScaleFactor)
                     }
+                    .background(.red)
+              
                 }
             }
             .listStyle(.plain)
             .navigationTitle("Hello, world")
         }
 
+    }
+}
+
+extension DynamicTypeSize{
+    var customMinScaleFactor: CGFloat{
+        switch self {
+        case .xSmall, .small, .medium:
+            return 1.0
+        case .large, .xLarge, .xxLarge:
+            return 0.8
+            default:
+            return 0.6
+        }
     }
 }
 
