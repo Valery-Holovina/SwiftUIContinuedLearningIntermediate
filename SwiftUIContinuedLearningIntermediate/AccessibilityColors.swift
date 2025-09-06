@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// XCode -> Open Developer Tool -> Accessebility inspector -> Window -> Show Color Contrast Calculation (should be at least 4.5 - 7 : 1)
+
 struct AccessibilityColors: View {
     var body: some View {
         VStack{
