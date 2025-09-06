@@ -19,6 +19,9 @@ struct AccessibilityColors: View {
     // if person has increase contrast in their settings
     @Environment(\.colorSchemeContrast) var increaseContrast
     
+    // if person has defferentiate without color in their settings
+    @Environment(\.accessibilityDifferentiateWithoutColor) var defferentiate
+    
     var body: some View {
         VStack{
             Button("Button 1") {
@@ -40,13 +43,14 @@ struct AccessibilityColors: View {
             Button("Button 4") {
                 
             }
-            .tint(.purple)
+            .foregroundStyle(defferentiate ? .white: .green)
+            .tint(defferentiate ? .black: .purple)
             .buttonStyle(.borderedProminent)
         }
         .font(.largeTitle)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
-        .background( reduceTransparency ?  .black : .black.opacity(0.5))
+//        .background( reduceTransparency ?  .black : .black.opacity(0.5))
     }
 }
 
