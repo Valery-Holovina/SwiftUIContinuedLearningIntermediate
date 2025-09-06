@@ -22,6 +22,10 @@ struct AccessibilityColors: View {
     // if person has defferentiate without color in their settings
     @Environment(\.accessibilityDifferentiateWithoutColor) var defferentiate
     
+    // if person has smart invert in their settings
+    @Environment(\.accessibilityInvertColors) var smartInvert
+
+    
     var body: some View {
         VStack{
             Button("Button 1") {
