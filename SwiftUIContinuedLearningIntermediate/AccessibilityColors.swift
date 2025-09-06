@@ -16,14 +16,15 @@ struct AccessibilityColors: View {
     // if person has reduce transparency in their settings
     @Environment(\.accessibilityReduceTransparency) var reduceTransparency
     
-    
+    // if person has increase contrast in their settings
+    @Environment(\.colorSchemeContrast) var increaseContrast
     
     var body: some View {
         VStack{
             Button("Button 1") {
                 
             }
-            .foregroundStyle(.primary)
+            .foregroundStyle(increaseContrast == .increased ? .white : .primary)
             .buttonStyle(.borderedProminent)
             
             Button("Button 2") {
