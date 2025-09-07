@@ -6,6 +6,14 @@
 //
 
 import SwiftUI
+// For blind people
+
+// ask Siri to turn on Voice over on your device
+
+// if swipe left it goes up
+// if swipe right it goes down
+// if swipe down goes to different section below
+
 
 struct AccessibilityVoiceOver: View {
     
@@ -20,12 +28,23 @@ struct AccessibilityVoiceOver: View {
                     HStack{
                         Text("Volume")
                         Spacer()
-                        Text(isActive ? "ON" : "Off")
+                        Text(isActive ? "True" : "False")
+                            .accessibilityHidden(true) // will not say it
                     }
                     .background(.black.opacity(0.001))
                     .onTapGesture {
                         isActive.toggle()
                     }
+                    .accessibilityElement(children: .combine) // groups two elements
+                    .accessibilityAddTraits(.isButton) // says that it is a button
+                    .accessibilityValue(isActive ? "is on" : "is off") // will say
+                    .accessibilityHint("Double tap to toggle setting") // will also say this info
+                    .accessibilityAction {
+                        isActive.toggle()
+                    }
+                    
+                    
+                    
                 } header: {
                     Text("Preferences")
                 }
@@ -34,17 +53,22 @@ struct AccessibilityVoiceOver: View {
                     Button("Favorites") {
                         
                     }
+                    .accessibilityRemoveTraits(.isButton) // do not says button
                     
                     Button {
                         
                     } label: {
                         Image(systemName: "heart.fill")
                     }
+                    .accessibilityLabel("Favorites") // says instead of "love button" -> "favorites button"
+                    
                     
                     Text("Favorites")
+                        .accessibilityAddTraits(.isButton)
                         .onTapGesture {
                             
                         }
+                       
 
                 } header: {
                     Text("Application")
