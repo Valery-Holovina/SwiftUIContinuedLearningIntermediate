@@ -29,8 +29,57 @@ struct AccessibilityVoiceOver: View {
                 } header: {
                     Text("Preferences")
                 }
+                
+                Section {
+                    Button("Favorites") {
+                        
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "heart.fill")
+                    }
+                    
+                    Text("Favorites")
+                        .onTapGesture {
+                            
+                        }
+
+                } header: {
+                    Text("Application")
+                }
+                
+                VStack{
+                    Text("CONTENT")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundStyle(.secondary)
+                        .font(.caption)
+                    
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 8) {
+                            ForEach(0..<10) { x in
+                                VStack{
+                                    Image("car")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 140, height: 80)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    
+                                    Text("item \(x)")
+                                }
+                                .onTapGesture {
+                                    
+                                }
+                            }
+                        }
+                    }
+                    .scrollIndicators(.hidden)
+                }
+
 
             }
+            .navigationTitle("Settings")
         }
     }
 }
