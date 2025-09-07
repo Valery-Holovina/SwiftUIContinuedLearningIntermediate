@@ -79,6 +79,7 @@ struct AccessibilityVoiceOver: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundStyle(.secondary)
                         .font(.caption)
+                        .accessibilityAddTraits(.isHeader)
                     
                     ScrollView(.horizontal) {
                         HStack(spacing: 8) {
@@ -93,6 +94,13 @@ struct AccessibilityVoiceOver: View {
                                     Text("item \(x)")
                                 }
                                 .onTapGesture {
+                                    
+                                }
+                                .accessibilityElement(children: .combine)
+                                .accessibilityAddTraits(.isButton)
+                                .accessibilityLabel("Item \(x). Image of car")
+                                .accessibilityHint("Double tap to open")
+                                .accessibilityAction {
                                     
                                 }
                             }
