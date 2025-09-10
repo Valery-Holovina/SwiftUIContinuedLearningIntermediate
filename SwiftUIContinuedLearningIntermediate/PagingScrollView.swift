@@ -10,18 +10,19 @@ import SwiftUI
 struct PagingScrollView: View {
     var body: some View {
         ScrollView{
-            VStack(spacing: 30) {
+            VStack(spacing: 0) {
                 ForEach(0..<10) { index in
                     Rectangle()
-                        .frame(width: 300, height: 300)
                         .overlay {
                             Text("\(index)").foregroundStyle(.white)
                         }
                         .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
                         .containerRelativeFrame(.vertical, alignment: .center)
                 }
             }
         }
+        .ignoresSafeArea()
         .scrollBounceBehavior(.basedOnSize) // you will not be able to move it if there are not many items
         .scrollTargetLayout()
         .scrollTargetBehavior(.paging) // pages like in tik tok
